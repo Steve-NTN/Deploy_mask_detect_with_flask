@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Test with image{% endblock %}
+{% block namepage %}Detection on Image{% endblock %}
+{% block content %}
+<div style="text-align: center;">
+    <div style="color: #fff; margin-bottom: 20px;">
+        
+    </div>
+    <form id="upload-file" action="/image" method="post" enctype="multipart/form-data">
+        <label for="img-input" class="img-input-label">
+            Upload yout image here <i class="fas fa-long-arrow-alt-down"></i>
+        </label>
+        <input id="img-input" name="file" type="file" style="text-align: center;"  accept=".png, .jpg, .jpeg"/> 
+    </form>
+
+    <div class="image-section" style="display:none; display: flex; justify-content: center; margin-top: 30px;">
+        <div class="img-preview" style="display: none;">
+            <div id="imagePreview">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="output" >
+    <label class="img-input-label" id="btn-predict" style="display: none;">Predict</label>
+    <div  class="loader-h">
+        <div class="loader"></div>
+    </div>
+    
+    <div class="img-output" id="result" style="display: none;">
+        <div class="img-preview">
+            <div id="image-output">
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+{% endblock %}

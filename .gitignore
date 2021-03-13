@@ -1,0 +1,7 @@
+/.vscode
+mask_detector.model
+/uploads/input.jpg
+/uploads/output.jpg
+.python-version
+/__pycache__/
+

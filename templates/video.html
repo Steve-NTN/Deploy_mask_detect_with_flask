@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% block title %}
+Test with video
+{% endblock %}
+
+{% block namepage %}Detection on Camera{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center;">
+    <div class="video-output">
+        <div class="img-preview" style="width: 600px; height: 500px;">
+            <div id="video-output" style="background-image: url('{{ url_for('video_feed')}}');">
+            </div>
+        </div>
+    </div>
+    <label class="img-input-label" id="btn-stop">Start</label>
+</div>
+
+
+{% endblock%}
