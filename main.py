@@ -17,12 +17,17 @@ app = Flask(__name__)
 video_input = cv2.VideoCapture(0)
 
 # Model saved with Keras model.save()
-MODEL_PATH = 'mask_detector.model'
+MODEL_PATH = 'mask_detector_best.model'
 
 # load the face mask detector model from disk
 print("[INFO] loading face mask detector model...")
 model = load_model(MODEL_PATH)
 
+@app.route('/', methods=['GET'])
+def index():
+    if request.method == 'GET':
+        # show the upload form
+        return render_template('index.html')
 
 @app.route('/image', methods=['GET', 'POST'])
 def home():
