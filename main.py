@@ -1,4 +1,5 @@
 from __future__ import division, print_function
+from logging import debug
 # coding=utf-8
 import sys
 import os
@@ -101,4 +102,4 @@ def server_error(error):
     return render_template('error.html'), 500
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    app.run(threaded=True, debug=True)

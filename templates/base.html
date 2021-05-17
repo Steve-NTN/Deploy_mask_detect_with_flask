@@ -19,23 +19,23 @@
     </label>
     <div class="sidebar">
       <header>Menu</header>
-      <a href="/">
+      <a href="/" style="{% block selected_home %} {% endblock %}">
         <i class="fas fa-home" ></i>
         <span>Home</span>
       </a>
-      <a href="/image">
+      <a href="/image" style="{% block selected_image %} {% endblock %}">
         <i class="fas fa-images" ></i>
         <span>Test with image</span>
       </a>
-      <a href="/video">
+      <a href="/video" style="{% block selected_video %} {% endblock %}">
         <i class="fas fa-camera-retro"></i>
         <span>Test with camera</span>
       </a>
-      <a href="/about">
+      <a href="/about" style="{% block selected_about %} {% endblock %}">
         <i class="far fa-question-circle"></i>
         <span>About</span>
       </a>
-      <a href="/contact">
+      <a href="/contact" style="{% block selected_contact %} {% endblock %}">
         <i class="far fa-envelope"></i>
         <span>Contact</span>
       </a>
@@ -47,6 +47,11 @@
         </div>
         
         {% block content %}{% endblock %}
+    </div>
+
+      
+    <div class="footer">
+      <p>Make by <a>NguyenTrongNghia</a></p>
     </div>
 </body>
 <script defer src="{{ url_for('static', filename='js/event.js')}}"></script>

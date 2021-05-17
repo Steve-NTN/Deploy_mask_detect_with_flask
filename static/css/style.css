@@ -211,3 +211,23 @@ input[type="file"] {
 #video-output{
   background-size: 600px 500px;
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #00000042;
+  color: white;
+  text-align: center;
+  height: 65px;
+}
+
+.footer p{
+  background: none;
+  margin-top: 25px;
+}
+
+.footer a:hover{
+  border-left: none;
+}
