@@ -1,5 +1,5 @@
 Flask==1.1.2
 Keras==2.4.3
 matplotlib==3.3.3
-opencv-python==4.2.0.34
+opencv-python==4.4.0.40
 tensorflow==2.4.1
