@@ -96,36 +96,33 @@ function readURL(input) {
 
 });
 
-let optionVideo = false
-// XMLHttpRequest
-var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-        // alert(xhr.responseText);
-    }
-}
-
+// Xử lí khi tắt và dừng ghi video
+let displayVideo = false
 
 $(document).ready(function () {
-    $('#btn-stop').click(
-        
+    $('#btn-playvideo').click(
         function(){
-            if(optionVideo){
-                $('#btn-stop').text("Start")
+            if(displayVideo){
+                $('#btn-playvideo').text("Start")
                 $('.video-output').css("display", "none")
-                optionVideo = false
-                xhr.open("POST", "/record_status");
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                xhr.send(JSON.stringify({ status: "true" }));
+                displayVideo = false
+                window.location = "/video"
             }
             else{
-                $('#btn-stop').text("Stop")
+                $('#btn-playvideo').text("Stop")
                 $('.video-output').css("display", "flex")
-                optionVideo = true
-                xhr.open("POST", "/record_status");
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                xhr.send(JSON.stringify({ status: "false" }));
+                displayVideo = true
             }   
+            
+            $.ajax({
+                type: 'POST',
+                url: '/record_status',
+                data: JSON.stringify({ playVideo: displayVideo }),
+                contentType: 'application/json',
+                success: function (data) {
+                    // console.log(data)
+                },
+            });
         }
     )
 })

@@ -1,13 +1,9 @@
 from __future__ import division, print_function
 from logging import debug
 # coding=utf-8
-import sys
 import os
-import glob
-import re
 from tensorflow.keras.models import load_model
-import argparse
-from flask import Flask, redirect, url_for, request, render_template, flash, Response, jsonify
+from flask import Flask, request, render_template, Response, jsonify
 from werkzeug.utils import secure_filename
 from image import image_predict
 import cv2
@@ -18,7 +14,7 @@ app = Flask(__name__)
 video_input = cv2.VideoCapture(0)
 
 # Model saved with Keras model.save()
-MODEL_PATH = 'mask_detector_best.model'
+MODEL_PATH = 'mask_detector.model'
 
 # load the face mask detector model from disk
 print("[INFO] loading face mask detector model...")
@@ -51,36 +47,36 @@ def home():
             encoded_string = base64.b64encode(image_file.read())        
         return encoded_string
 
+
+is_playing_video = False
+
 @app.route('/record_status', methods=['POST'])
 def record_status():
-    global video_input
+  global is_playing_video, video_input
+  # global video_input
+  json = request.get_json()
+  status = json['playVideo']
 
-    json = request.get_json()
-    status = json['status']
+  is_playing_video = status
+  if not is_playing_video:
+    video_input.release()
+    video_input = cv2.VideoCapture(0)
 
-    if status == "true":
-        video_input.release()
-        video_input = cv2.VideoCapture(0)
-        return jsonify(result="stopped")
-    else:
-        # video_camera.stop_record()
-        # video_input.read()
-        return jsonify(result="start")
+  return jsonify(playVideo=is_playing_video)
 
 def gen(video_input):
-    while True:
-        success, image = video_input.read()
-        image = image_predict(image, model)
-        ret, jpeg = cv2.imencode('.jpg', image)
-        frame = jpeg.tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')   
+  while True:
+    success, image = video_input.read()
+    image = image_predict(image, model)
+    ret, jpeg = cv2.imencode('.jpg', image)
+    frame = jpeg.tobytes()
+    yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')   
 
 @app.route('/video_feed')
 def video_feed():
-    global video_input
-    return Response(gen(video_input),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+  global video_input, is_playing_video
+  return Response(gen(video_input), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video')
 def video():
@@ -102,4 +98,4 @@ def server_error(error):
     return render_template('error.html'), 500
 
 if __name__ == "__main__":
-    app.run(threaded=True, debug=True)
+    app.run(threaded=True)

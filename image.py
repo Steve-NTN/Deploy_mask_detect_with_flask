@@ -5,12 +5,11 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
 import cv2
 
-IMG_HEIGHT = 150
-IMG_WIDTH = 150
+IMG_HEIGHT = 70
+IMG_WIDTH = 70
 
 def image_predict(img_path, model):
 	# load our serialized face detector model from disk
-	print("[INFO] loading face detector model...")
 	prototxtPath = os.path.sep.join(["face_detector", "deploy.prototxt"])
 	weightsPath = os.path.sep.join(["face_detector",
 		"res10_300x300_ssd_iter_140000.caffemodel"])
@@ -26,8 +25,6 @@ def image_predict(img_path, model):
 	# construct a blob from the image
 	blob = cv2.dnn.blobFromImage(image_ogr, 1.0, (300, 300),
 		(104.0, 177.0, 123.0))
-
-	print("[INFO] computing face detections...")
 	net.setInput(blob)
 	detections = net.forward()
 
@@ -54,9 +51,9 @@ def image_predict(img_path, model):
 
 			# pass the face through the model to determine if the face
 			# has a mask or not
-			(without_mask, with_mask) = model.predict(face)[0]
+			(with_mask, without_mask) = model.predict(face)[0]
 
-			label = "Mask" if without_mask > with_mask else "No Mask"
+			label = "Mask" if without_mask < with_mask else "No Mask"
 			color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
 			label = "{}: {:.2f}%".format(label, max(with_mask, without_mask) * 100)
 
